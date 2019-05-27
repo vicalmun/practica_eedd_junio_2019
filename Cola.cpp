@@ -19,21 +19,12 @@ Cola::~Cola()
     }
 }
 
-//Insertar siempre crea una nueva solicitud
+/**
+ * Inserta en la cola una solicitud, recibe la IP de origen de la solicitu en forma de cadena
+ * Insertar siempre crea una nueva solicitud
+ */
 void Cola::insertar(string direccion_ip){
     Solicitud* aux = new Solicitud(direccion_ip);
-/* ESTO NO FUNCIONA
-    if (!this->primero){
-        // Si no existe primero, ergo esta vacia
-        this->primero = aux;
-        this->ultimo = aux;
-        //El aux es el unico elemento, ergo es primero y utimo
-    }else{
-        // Si hay elementos, se añade al final.
-        this->ultimo->siguiente = aux;
-    }
-*/
-// ESTO NO SE COMO FUNCIONA, PERO LO HACE
     if(ultimo){
         ultimo->siguiente = aux;
     }
@@ -44,6 +35,9 @@ void Cola::insertar(string direccion_ip){
 
 }
 
+/**
+ * Elimina la primera solicitud de la cola
+ */
 void Cola::borrarPrimeraSolicitud(){
     Solicitud* temp = primero;
     if (primero == NULL)
@@ -53,15 +47,24 @@ void Cola::borrarPrimeraSolicitud(){
         delete temp;
 }
 
+/**
+ * Devuelve la cadena de la primera solicitud de la cola
+ */
 string Cola::primeraSolicitud(){
     cout<<"Primera solicitud realizada: "<< primero->direccion_ip;
     return primero->direccion_ip;
 }
 
+/**
+ * Devuelve la primera Solicitud de la cola para poder trabajar con ella.
+ */
 Solicitud* Cola::get_Primera_Solicitud(){
     return this->primero;
 }
 
+/**
+ * Imprime la cola.
+ */
 void Cola::mostrar(){
     if (this->esta_Vacia()){
         cout <<"La cola de solicutudes esta vacia";
@@ -76,17 +79,26 @@ void Cola::mostrar(){
      cout <<endl;
 }
 
+/**
+ * Elimina el primera Solicitud de la Cola
+ */
 void Cola::eliminar(){
     Solicitud* aux = primero;
     primero=primero->siguiente;
     delete aux;
 }
 
+/**
+ * Comprueba que la cola esté vacía, devuelve un booleano con el estado.
+ */
 bool Cola::esta_Vacia(){
     return (this->primero == NULL) ? false : true;
     
 }
 
+/**
+ * Devuelve un entero que representa el numero de solicitudes restantes en la cola
+ */
 int Cola::contar_Solicitudes_Restantes(){
     int sol_restantes = 0;
      Solicitud* aux =primero;

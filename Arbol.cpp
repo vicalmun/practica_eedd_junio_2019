@@ -12,6 +12,16 @@ Arbol::~Arbol(){
 	elimina_Arbol();
 }
 
+/**
+ * Elimina el arbol desde la raíz
+ */
+void Arbol::elimina_Arbol(){
+	elimina_Arbol(raiz);
+}
+
+/**
+ * Elimina el arbol desde el nodo que pasamos como argumento
+ */
 void Arbol::elimina_Arbol(NodoArbol *hoja){
 	if(hoja != NULL){
 		elimina_Arbol(hoja->izq);
@@ -20,9 +30,11 @@ void Arbol::elimina_Arbol(NodoArbol *hoja){
 	}
 }
 
+/** AKA 'Insertar B'
+ * Inserta en el arbol un nodo hoja de forma ordenada con respecto a los nodos que ya existen
+ * Como valor el ID de la computadora 
+ */
 void Arbol::insert(int key, NodoArbol *hoja){
-	// Solo se le pasa un NodoArbol porque solo introduce un valor
-	// y y dentro vemos si se lo introducimos a la drch. o a la izq.
 	if(key < hoja->valor){
 		// Si es menor: añade a la izquierda
 		if(hoja->izq != NULL){
@@ -51,6 +63,10 @@ void Arbol::insert(int key, NodoArbol *hoja){
 
 }
 
+/** AKA 'Insertar A'
+ * Inserta en el arbol un valor,
+ * si no existe la raíz la crea. Si existe llama a 'Insertar B'
+ */
 void Arbol::insert(int key){
 	if(raiz != NULL){
 		insert(key, raiz);
@@ -62,6 +78,9 @@ void Arbol::insert(int key){
 	}
 }
 
+/** AKA 'Buscar B'
+ * Busca de forma recursiva el valor que le pasamos como argumento
+ */
 NodoArbol *Arbol::buscar(int key, NodoArbol *hoja){
 	if(hoja != NULL){
 		if(key == hoja->valor){
@@ -77,16 +96,17 @@ NodoArbol *Arbol::buscar(int key, NodoArbol *hoja){
 	}
 }
 
-// Este es el publico y el primero porque le pasamos directamente
-// el nodo raiz
+/** AKA 'Buscar A'
+ * Este es el publico y el primero porque le pasamos directamente el nodo raiz
+ */
 NodoArbol *Arbol::buscar(int key){
 	return buscar(key, raiz);
 }
 
-void Arbol::elimina_Arbol(){
-	elimina_Arbol(raiz);
-}
-
+//Impresiones
+/*Todas tienen el método publico que se llama desde la raíz y posteriormente
+	llama a los métodos privados pasándoles los hijos como argumentos de forma recursiva
+*/
 void Arbol::inorder_print(){
 	inorder_print(raiz);
 	cout << "\n";
@@ -126,7 +146,9 @@ void Arbol::preorder_print(NodoArbol *hoja){
 	}
 }
 
-
+/**
+ * Crea un arbol con los codigos identificativos de las computadoras a partir de una lista de estas.
+ */
 void Arbol::crear_Arbol_Desde_Granja(Granja *granja){
 	Computadora *temp;
 	temp = granja->primero;

@@ -6,59 +6,72 @@ Granja::Granja(Computadora *primero, Computadora *ultimo){
 }
 Granja::~Granja(){
 }
+
+/**
+ * Añade una computadora a la granja.
+ * Esta se agrega en orden, de forma que la lista está ordenada de menor a mayor
+ */
 void Granja::add_Computadora(Computadora *nueva){
-Computadora *temp = this->primero;
-// While: está comparando las direcciones de memoria a donde a puntan temp y ultimo
-if (this->esta_Vacia()){
-    this->primero = nueva;
-    this->ultimo = nueva;
-}else if (this->primero == this->ultimo){
-    //Si solo tiene un elemento
-    if (primero->codigo < nueva->codigo){
-        primero->siguiente = nueva;
-        nueva->anterior = primero;
-        nueva->siguiente = NULL;
-        ultimo = nueva;
-    }else{
-        primero->anterior = nueva;
-        nueva->siguiente = primero;
-        //Para prevenir
-        nueva->anterior = NULL;
-        primero = nueva;
-    }
-}else{
-    do{
-        // Si encuentra donde meter
-        if (nueva->codigo < temp->codigo){
-            if(primero=temp){  
-                // 1º asignar a nueva el título de primero
-                primero = nueva;
-            }
-            else{
-                // El anterior de temp que el sguiente apunte a nuevo
-                temp->anterior->siguiente = nueva;
-            }
-            temp->anterior = nueva;
-            nueva->siguiente = temp;
-            break;
+    Computadora *temp = this->primero;
+    // While: está comparando las direcciones de memoria a donde a puntan temp y ultimo
+    if (this->esta_Vacia()){
+        this->primero = nueva;
+        this->ultimo = nueva;
+    }else if (this->primero == this->ultimo){
+        //Si solo tiene un elemento
+        if (primero->codigo < nueva->codigo){
+            primero->siguiente = nueva;
+            nueva->anterior = primero;
+            nueva->siguiente = NULL;
+            ultimo = nueva;
+        }else{
+            primero->anterior = nueva;
+            nueva->siguiente = primero;
+            //Para prevenir
+            nueva->anterior = NULL;
+            primero = nueva;
         }
-        temp = temp->siguiente;
-    }while(temp != ultimo);
-    // Si estamos aqui, es porque no se ha encontrado ningun candidato entonces nuestra nueva computadora va al final.
-    nueva->anterior = ultimo;
-    ultimo->siguiente = nueva;
-    ultimo= nueva;
-    nueva->siguiente = NULL; //Por si acaso.
+    }else{
+        do{
+            // Si encuentra donde meter
+            if (nueva->codigo < temp->codigo){
+                if(primero=temp){  
+                    // 1º asignar a nueva el título de primero
+                    primero = nueva;
+                }
+                else{
+                    // El anterior de temp que el sguiente apunte a nuevo
+                    temp->anterior->siguiente = nueva;
+                }
+                temp->anterior = nueva;
+                nueva->siguiente = temp;
+                break;
+            }
+            temp = temp->siguiente;
+        }while(temp != ultimo);
+        // Si estamos aqui, es porque no se ha encontrado ningun candidato entonces nuestra nueva computadora va al final.
+        nueva->anterior = ultimo;
+        ultimo->siguiente = nueva;
+        ultimo= nueva;
+        nueva->siguiente = NULL; //Por si acaso.
+    }
+    cout << "Se ha añadido Computadora " << nueva->codigo << endl; // " entre Computadora " << nueva->anterior->codigo << " y Computadora " << nueva->siguiente->codigo << endl;
 }
 
-cout << "Se ha añadido Computadora " << nueva->codigo << endl; // " entre Computadora " << nueva->anterior->codigo << " y Computadora " << nueva->siguiente->codigo << endl;
-
-}
+/**
+ * Crea una computadora a partir del codigo que le pasamos como argumento.
+ * Después añade esa computadora creada a la lista llamando al método add_Computdora()
+ */
 void Granja::add_Computadora(int codigo){
     Computadora *computadora = new Computadora(codigo);
     // Con el overload conseguimos poder crear una computadora atraves de CODIGO o pasandole una computadora.
     this->add_Computadora(computadora);
 }
+
+/**
+ * Recibe como argumento el codigo de una computadora.
+ * Si está en la lista la elimina, si no, pues no.
+ */
 void Granja::borrar_Computadora (int codigo){
     cout <<"HAS ENTRADO AL METODO BORRRAR\n";
     if (this->existe_Computadora(codigo)){
@@ -117,9 +130,12 @@ void Granja::borrar_Computadora (int codigo){
     }
 }
 
+/**
+ * Comprueba que una Computadora esté en la lista.
+ * Recibe como parámetro un int del codigo de la computadora que queremos eliminar
+ */
 bool Granja::existe_Computadora(int codigo){
     cout <<"HAS ENTRADO AL METODO EXISTE\n";
-    
     
     cout <<"Codigo introducido: " <<codigo <<endl;
     //cout << temp->codigo <<" y primero: " <<primero->codigo;
@@ -158,11 +174,18 @@ bool Granja::existe_Computadora(int codigo){
     return encontrado;
 }
 
+/**
+ * Comprueba si la lista está o no vacía. Devuelve un boolean con el estado.
+ */
 bool Granja::esta_Vacia(){
     // Operador ternario http://www.cplusplus.com/forum/articles/14631/
     return (this->primero) ? false : true;
 }
 
+/**
+ * Devuelve un entero con el número de computadoras de la Granja (lista)
+ * las cuales NO tienen una Cola vacía (la cola tiene Solicitudes)
+ */
 int Granja::get_Computadoras_Operativas(){
     //Recorrer toda la lista buscando las que están operativas
     int computadoras_Operativas = 0;
@@ -181,6 +204,9 @@ int Granja::get_Computadoras_Operativas(){
     return computadoras_Operativas;
 }
 
+/**
+ * Devuelve un entero con el número de computadoras que hay en la lista
+ */
 int Granja::get_Computadoras_En_Granja(){
     int numero_Computadoras = 0;
     if(this->esta_Vacia()){
@@ -195,15 +221,18 @@ int Granja::get_Computadoras_En_Granja(){
     return numero_Computadoras;
 }
 
-//REVISAR PARA QUE NO ELIMINE EL NUMERO
+/**
+ * Devuelve la Compputadora que esta en la primera posición de la lista
+ */
 Computadora* Granja::ver_Primero(){
     Computadora *temp = NULL;
     if (!this->esta_Vacia()){
         temp = this->primero;
-        //this->primero = primero->siguiente;
     } 
     return temp;
 }
+
+
 /*
 void Granja::imprimir_Lista(Granja *granja){
     Computadora *temp = NULL;
